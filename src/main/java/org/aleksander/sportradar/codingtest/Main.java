@@ -1,10 +1,10 @@
 package org.aleksander.sportradar.codingtest;
 
 import org.aleksander.sportradar.codingtest.exceptions.EntryNotFoundException;
-import org.aleksander.sportradar.codingtest.objects.Match;
-import org.aleksander.sportradar.codingtest.objects.Score;
-import org.aleksander.sportradar.codingtest.objects.Scoreboard;
-import org.aleksander.sportradar.codingtest.objects.Team;
+import org.aleksander.sportradar.codingtest.scoreboard.Score;
+import org.aleksander.sportradar.codingtest.scoreboard.Scoreboard;
+import org.aleksander.sportradar.codingtest.scoreboard.Team;
+import org.aleksander.sportradar.codingtest.scoreboard.match.Match;
 
 import java.util.List;
 

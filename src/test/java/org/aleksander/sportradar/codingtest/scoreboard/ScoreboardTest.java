@@ -1,8 +1,9 @@
-package org.aleksander.sportradar.codingtest.objects;
+package org.aleksander.sportradar.codingtest.scoreboard;
 
 
 import org.aleksander.sportradar.codingtest.exceptions.EntryNotFoundException;
 import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
+import org.aleksander.sportradar.codingtest.scoreboard.match.Match;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

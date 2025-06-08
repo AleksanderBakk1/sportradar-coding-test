@@ -1,6 +1,4 @@
-package org.aleksander.sportradar.codingtest.objects.comparator;
-
-import org.aleksander.sportradar.codingtest.objects.Match;
+package org.aleksander.sportradar.codingtest.scoreboard.match;
 
 import java.time.Instant;
 import java.util.Comparator;
