@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Instant;
 import java.util.stream.Stream;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchTest {
@@ -86,10 +87,11 @@ public class MatchTest {
     }
 
     @Test
-    void a_new_match_sets_the_time_started_to_the_current_time() {
+    void a_new_match_sets_the_time_started_to_the_current_time() throws InterruptedException {
         // When a new match is created
         final Match match = new Match(TEST_HOME_TEAM, TEST_AWAY_TEAM);
         // Then the createTime is set to mocked current time
+        sleep(10);
         assertNotNull(match.getTimeStarted());
         assertTrue(match.getTimeStarted().isBefore(Instant.now()));
     }
