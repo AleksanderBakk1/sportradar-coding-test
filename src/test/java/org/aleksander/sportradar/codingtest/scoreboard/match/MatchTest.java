@@ -4,7 +4,6 @@ package org.aleksander.sportradar.codingtest.scoreboard.match;
 import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
 import org.aleksander.sportradar.codingtest.scoreboard.Score;
 import org.aleksander.sportradar.codingtest.scoreboard.Team;
-import org.aleksander.sportradar.codingtest.scoreboard.match.Match;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,8 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Instant;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchTest {
     private final static Team TEST_HOME_TEAM = new Team("test_home_team");
@@ -92,9 +90,8 @@ public class MatchTest {
         // When a new match is created
         final Match match = new Match(TEST_HOME_TEAM, TEST_AWAY_TEAM);
         // Then the createTime is set to mocked current time
-        // TODO: Look into using mock to ensure this test does not fail if it runs slowly or during debug mode
-        final Instant expectedInstant = Instant.now();
-        assertEquals(expectedInstant, match.getTimeStarted());
+        assertNotNull(match.getTimeStarted());
+        assertTrue(match.getTimeStarted().isBefore(Instant.now()));
     }
 
     @ParameterizedTest
