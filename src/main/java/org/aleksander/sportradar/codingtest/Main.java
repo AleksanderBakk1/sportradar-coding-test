@@ -7,19 +7,25 @@ import org.aleksander.sportradar.codingtest.objects.Team;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("Starting Sportradar coding test!");
         sportradarProvidedExample();
     }
 
-    public static void sportradarProvidedExample() {
+    public static void sportradarProvidedExample() throws InterruptedException {
         // Create matches in order provided
         final Scoreboard scoreboard = new Scoreboard();
         final String mexicoCanadaId = scoreboard.startNewMatch(new Team("Mexico"), new Team("Canada"));
+        sleep(10);
         final String spainBrazilId = scoreboard.startNewMatch(new Team("Spain"), new Team("Brazil"));
+        sleep(10);
         final String germanyFranceId = scoreboard.startNewMatch(new Team("Germany"), new Team("France"));
+        sleep(10);
         final String uruguayItalyId = scoreboard.startNewMatch(new Team("Uruguay"), new Team("Italy"));
+        sleep(10);
         final String argentinaAustraliaId = scoreboard.startNewMatch(new Team("Argentina"), new Team("Australia"));
 
         // Update matches in order provided with scores provided
