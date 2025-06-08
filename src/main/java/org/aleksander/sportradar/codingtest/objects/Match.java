@@ -1,6 +1,8 @@
 package org.aleksander.sportradar.codingtest.objects;
 
+import java.security.InvalidParameterException;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Match {
@@ -13,8 +15,8 @@ public class Match {
 
     public Match(final Team homeTeam, final Team awayTeam) {
         this.matchId = createMatchId();
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+        this.homeTeam = requireNonNullOrEmpty(homeTeam);
+        this.awayTeam = requireNonNullOrEmpty(awayTeam);
         // A match always starts at 0 - 0.
         this.matchScore = new Score(0, 0);
         // Set time of creation
@@ -52,10 +54,24 @@ public class Match {
     }
 
     public void setMatchScore(final Score matchScore) {
-        this.matchScore = matchScore;
+        // This method could in theory be expanded upon to include that none of the scores could have decreased. But this is not specified in the spec, so will not do.
+        if (matchScore != null) {
+            this.matchScore = matchScore;
+        }
+        else {
+            // If input is 'null' it will log the event and NOT set the score
+            System.out.println("Invalid score was input. Ignoring the input.");
+        }
     }
 
     public Instant getTimeStarted() {
         return timeStarted;
+    }
+
+    private Team requireNonNullOrEmpty(final Team team) {
+        if (team == null || team.teamName() == null || team.teamName().isEmpty()) {
+            throw new InvalidParameterException("A team cannot be 'null' or contain 'null' or empty team name");
+        }
+        return team;
     }
 }

@@ -39,8 +39,23 @@ public class MatchTest {
                 InvalidParameterException.class, () -> new Match(TEST_HOME_TEAM, new Team(invalidTeamName))
         );
         // Then both teams resulted in an exception with a descriptive error message
-        assertEquals("Parameter homeTeam cannot be null or empty!", invalidParameterExceptionHome.getMessage());
-        assertEquals("Parameter awayTeam cannot be null or empty!", invalidParameterExceptionAway.getMessage());
+        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionHome.getMessage());
+        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionAway.getMessage());
+    }
+
+    @Test
+    void a_new_match_must_not_have_null_team() {
+        // When a new match is created with null home team
+        final InvalidParameterException invalidParameterExceptionHome = assertThrows(
+                InvalidParameterException.class, () -> new Match(null, TEST_AWAY_TEAM)
+        );
+        // and a new match is created with null away team
+        final InvalidParameterException invalidParameterExceptionAway = assertThrows(
+                InvalidParameterException.class, () -> new Match(TEST_HOME_TEAM, null)
+        );
+        // Then both teams resulted in an exception with a descriptive error message
+        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionHome.getMessage());
+        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionAway.getMessage());
     }
 
     @Test
