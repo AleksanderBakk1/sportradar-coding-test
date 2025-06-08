@@ -1,4 +1,4 @@
-package org.aleksander.sportradar.codingtest.objects;
+package org.aleksander.sportradar.codingtest.scoreboard;
 
 import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.Test;

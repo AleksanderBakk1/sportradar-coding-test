@@ -1,7 +1,10 @@
-package org.aleksander.sportradar.codingtest.objects;
+package org.aleksander.sportradar.codingtest.scoreboard.match;
 
 
 import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
+import org.aleksander.sportradar.codingtest.scoreboard.Score;
+import org.aleksander.sportradar.codingtest.scoreboard.Team;
+import org.aleksander.sportradar.codingtest.scoreboard.match.Match;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
