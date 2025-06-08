@@ -1,13 +1,12 @@
 package org.aleksander.sportradar.codingtest.objects;
 
 
+import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import java.security.InvalidParameterException;
 import java.time.Instant;
 import java.util.stream.Stream;
 
@@ -27,35 +26,19 @@ public class MatchTest {
         assertEquals("test_away_team", match.getAwayTeam().teamName());
     }
 
-    @ParameterizedTest
-    @NullAndEmptySource
-    void a_new_match_must_not_have_null_or_empty_team_names(final String invalidTeamName) {
-        // When a new match is created with invalid home team
-        final InvalidParameterException invalidParameterExceptionHome = assertThrows(
-                InvalidParameterException.class, () -> new Match(new Team(invalidTeamName), TEST_AWAY_TEAM)
-        );
-        // and a new match is created with invalid away team
-        final InvalidParameterException invalidParameterExceptionAway = assertThrows(
-                InvalidParameterException.class, () -> new Match(TEST_HOME_TEAM, new Team(invalidTeamName))
-        );
-        // Then both teams resulted in an exception with a descriptive error message
-        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionHome.getMessage());
-        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionAway.getMessage());
-    }
-
     @Test
     void a_new_match_must_not_have_null_team() {
         // When a new match is created with null home team
-        final InvalidParameterException invalidParameterExceptionHome = assertThrows(
-                InvalidParameterException.class, () -> new Match(null, TEST_AWAY_TEAM)
+        final InvalidArgumentException invalidArgumentExceptionHome = assertThrows(
+                InvalidArgumentException.class, () -> new Match(null, TEST_AWAY_TEAM)
         );
         // and a new match is created with null away team
-        final InvalidParameterException invalidParameterExceptionAway = assertThrows(
-                InvalidParameterException.class, () -> new Match(TEST_HOME_TEAM, null)
+        final InvalidArgumentException invalidArgumentExceptionAway = assertThrows(
+                InvalidArgumentException.class, () -> new Match(TEST_HOME_TEAM, null)
         );
         // Then both teams resulted in an exception with a descriptive error message
-        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionHome.getMessage());
-        assertEquals("A team cannot be 'null' or contain 'null' or empty team name", invalidParameterExceptionAway.getMessage());
+        assertEquals("A team cannot be 'null'", invalidArgumentExceptionHome.getMessage());
+        assertEquals("A team cannot be 'null'", invalidArgumentExceptionAway.getMessage());
     }
 
     @Test

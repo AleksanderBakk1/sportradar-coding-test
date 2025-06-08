@@ -2,14 +2,15 @@ package org.aleksander.sportradar.codingtest.objects;
 
 
 import org.aleksander.sportradar.codingtest.exceptions.EntryNotFoundException;
+import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScoreboardTest {
     private final static Team TEST_HOME_TEAM = new Team("test_home_team");
@@ -24,7 +25,7 @@ public class ScoreboardTest {
 
     // Start new match
     @Test
-    void scoreboard_can_add_a_new_match() {
+    void scoreboard_can_add_a_new_match() throws EntryNotFoundException {
         // When a new match is started
         final String matchId = scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
 
@@ -51,7 +52,7 @@ public class ScoreboardTest {
     }
 
     @Test
-    void scoreboard_can_add_several_matches() {
+    void scoreboard_can_add_several_matches() throws EntryNotFoundException {
         // Given 6 different teams, when a new match is started
         final String matchId1 = scoreboard.startNewMatch(new Team("home1"), new Team("away1"));
         final String matchId2 = scoreboard.startNewMatch(new Team("home2"), new Team("away2"));
@@ -80,7 +81,7 @@ public class ScoreboardTest {
 
     // Update match
     @Test
-    void scoreboard_can_update_match() {
+    void scoreboard_can_update_match() throws EntryNotFoundException {
         // Given a new match is started
         final String matchId = scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
 
@@ -98,7 +99,7 @@ public class ScoreboardTest {
     }
 
     @Test
-    void scoreboard_updating_a_match_an_invalid_matchId_leads_to_an_exception() {
+    void scoreboard_updating_a_match_with_an_invalid_matchId_leads_to_an_exception() {
         // Given a new match is started
         scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
 
@@ -110,20 +111,20 @@ public class ScoreboardTest {
     }
 
     @Test
-    void scoreboard_updating_a_match_an_invalid_score_leads_to_an_exception() {
+    void scoreboard_updating_a_match_with_an_invalid_score_leads_to_an_exception() {
         // Given a new match is started
         final String matchId = scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
 
         // When using an invalid score of 'null', and trying to update a match it leads to exception
-        final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> scoreboard.updateScoreOfMatch(matchId, null));
+        final InvalidArgumentException invalidArgumentException = assertThrows(InvalidArgumentException.class, () -> scoreboard.updateScoreOfMatch(matchId, null));
 
         // Then a descriptive error message is given
-        assertEquals("The score provided can not be 'null'", invalidParameterException.getMessage());
+        assertEquals("The score provided can not be 'null'", invalidArgumentException.getMessage());
     }
 
     // Finish match
     @Test
-    void scoreboard_can_finish_match() {
+    void scoreboard_can_finish_match() throws EntryNotFoundException {
         // Given a new match is started and updated
         final String matchId = scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
         scoreboard.updateScoreOfMatch(matchId, new Score(3, 7));
@@ -131,9 +132,8 @@ public class ScoreboardTest {
         // When the match is finished by using the match ID
         scoreboard.finishMatch(matchId);
 
-        // Then the match has been removed from the map of matches
-        final Match storedMatch = scoreboard.getMatch(matchId);
-        assertNull(storedMatch);
+        // Then the match has been removed from the map of matches and throws when trying to retrieve
+        assertThrows(EntryNotFoundException.class, () -> scoreboard.getMatch(matchId));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ScoreboardTest {
 
     // Get matches in order
     @Test
-    void scoreboard_can_return_ordered_list() throws InterruptedException {
+    void scoreboard_can_return_ordered_list() throws InterruptedException, EntryNotFoundException {
         // Given matches are created in a specific order
         final Scoreboard scoreboard = new Scoreboard();
         final String mexicoCanadaId = scoreboard.startNewMatch(new Team("Mexico"), new Team("Canada"));

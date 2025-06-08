@@ -1,5 +1,6 @@
 package org.aleksander.sportradar.codingtest;
 
+import org.aleksander.sportradar.codingtest.exceptions.EntryNotFoundException;
 import org.aleksander.sportradar.codingtest.objects.Match;
 import org.aleksander.sportradar.codingtest.objects.Score;
 import org.aleksander.sportradar.codingtest.objects.Scoreboard;
@@ -10,12 +11,12 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, EntryNotFoundException {
         System.out.println("Starting Sportradar coding test!");
         sportradarProvidedExample();
     }
 
-    public static void sportradarProvidedExample() throws InterruptedException {
+    public static void sportradarProvidedExample() throws InterruptedException, EntryNotFoundException {
         // Create matches in order provided
         final Scoreboard scoreboard = new Scoreboard();
         final String mexicoCanadaId = scoreboard.startNewMatch(new Team("Mexico"), new Team("Canada"));

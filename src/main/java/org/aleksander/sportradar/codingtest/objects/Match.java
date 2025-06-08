@@ -1,8 +1,8 @@
 package org.aleksander.sportradar.codingtest.objects;
 
-import java.security.InvalidParameterException;
+import org.aleksander.sportradar.codingtest.exceptions.InvalidArgumentException;
+
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public class Match {
@@ -69,8 +69,9 @@ public class Match {
     }
 
     private Team requireNonNullOrEmpty(final Team team) {
-        if (team == null || team.teamName() == null || team.teamName().isEmpty()) {
-            throw new InvalidParameterException("A team cannot be 'null' or contain 'null' or empty team name");
+        // teamName being null is covered by Team class
+        if (team == null) {
+            throw new InvalidArgumentException("A team cannot be 'null'");
         }
         return team;
     }
