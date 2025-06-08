@@ -1,6 +1,11 @@
 package org.aleksander.sportradar.codingtest.objects;
 
-import java.util.*;
+import org.aleksander.sportradar.codingtest.objects.comparator.MatchComparator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Scoreboard {
     private final Map<String, Match> matchesInProgress;
@@ -32,7 +37,9 @@ public class Scoreboard {
     }
 
     public List<Match> getMatchesInOrder() {
-        // TODO: Implement logic to determine order the matches are returned in. (Ordered by total score, if some matches have same score, order them by time started)
-        return this.matchesInProgress.values().stream().toList();
+        final List<Match> listOfMatches = this.matchesInProgress.values().stream().toList();
+        return listOfMatches.stream()
+                .sorted(new MatchComparator())
+                .collect(Collectors.toList());
     }
 }

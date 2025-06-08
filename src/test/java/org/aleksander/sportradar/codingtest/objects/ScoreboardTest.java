@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -100,13 +101,17 @@ public class ScoreboardTest {
 
     // Get matches in order
     @Test
-    void scoreboard_can_return_ordered_list() {
+    void scoreboard_can_return_ordered_list() throws InterruptedException {
         // Given matches are created in a specific order
         final Scoreboard scoreboard = new Scoreboard();
         final String mexicoCanadaId = scoreboard.startNewMatch(new Team("Mexico"), new Team("Canada"));
+        sleep(10);
         final String spainBrazilId = scoreboard.startNewMatch(new Team("Spain"), new Team("Brazil"));
+        sleep(10);
         final String germanyFranceId = scoreboard.startNewMatch(new Team("Germany"), new Team("France"));
+        sleep(10);
         final String uruguayItalyId = scoreboard.startNewMatch(new Team("Uruguay"), new Team("Italy"));
+        sleep(10);
         final String argentinaAustraliaId = scoreboard.startNewMatch(new Team("Argentina"), new Team("Australia"));
 
         // When updating matches in the same order with specific score values, and getting ordered list
