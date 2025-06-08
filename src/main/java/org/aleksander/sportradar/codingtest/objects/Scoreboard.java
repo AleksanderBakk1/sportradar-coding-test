@@ -28,7 +28,7 @@ public class Scoreboard {
     }
 
     public void updateScoreOfMatch(final String matchId, final Score newScore) {
-        final Match matchToUpdate = this.matchesInProgress.get(matchId);
+        final Match matchToUpdate = getMatch(matchId);
         matchToUpdate.setMatchScore(newScore);
     }
 

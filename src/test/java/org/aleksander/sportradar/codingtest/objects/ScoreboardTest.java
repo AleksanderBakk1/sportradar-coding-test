@@ -1,14 +1,15 @@
 package org.aleksander.sportradar.codingtest.objects;
 
 
+import org.aleksander.sportradar.codingtest.exceptions.EntryNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScoreboardTest {
     private final static Team TEST_HOME_TEAM = new Team("test_home_team");
@@ -35,6 +36,18 @@ public class ScoreboardTest {
         assertEquals(TEST_AWAY_TEAM, storedMatch.getAwayTeam());
         assertEquals(0, storedMatchScore.homeScore());
         assertEquals(0, storedMatchScore.awayScore());
+    }
+
+    @Test
+    void scoreboard_getting_a_match_with_an_invalid_matchId_leads_to_an_exception() {
+        // Given a new match is started
+        scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
+
+        // When using an invalid matchId, and trying to get a match it leads to exception
+        final EntryNotFoundException entryNotFoundException = assertThrows(EntryNotFoundException.class, () -> scoreboard.getMatch("123"));
+
+        // Then a descriptive error message is given
+        assertEquals("No match entry was found when trying to get match with matchId '123'", entryNotFoundException.getMessage());
     }
 
     @Test
@@ -84,6 +97,30 @@ public class ScoreboardTest {
         assertEquals(7, storedMatchScore.awayScore());
     }
 
+    @Test
+    void scoreboard_updating_a_match_an_invalid_matchId_leads_to_an_exception() {
+        // Given a new match is started
+        scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
+
+        // When using an invalid matchId, and trying to update a match it leads to exception
+        final EntryNotFoundException entryNotFoundException = assertThrows(EntryNotFoundException.class, () -> scoreboard.updateScoreOfMatch("123", new Score(1, 0)));
+
+        // Then a descriptive error message is given
+        assertEquals("No match entry was found when trying to get match with matchId '123'", entryNotFoundException.getMessage());
+    }
+
+    @Test
+    void scoreboard_updating_a_match_an_invalid_score_leads_to_an_exception() {
+        // Given a new match is started
+        final String matchId = scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
+
+        // When using an invalid score of 'null', and trying to update a match it leads to exception
+        final InvalidParameterException invalidParameterException = assertThrows(InvalidParameterException.class, () -> scoreboard.updateScoreOfMatch(matchId, null));
+
+        // Then a descriptive error message is given
+        assertEquals("The score provided can not be 'null'", invalidParameterException.getMessage());
+    }
+
     // Finish match
     @Test
     void scoreboard_can_finish_match() {
@@ -97,6 +134,18 @@ public class ScoreboardTest {
         // Then the match has been removed from the map of matches
         final Match storedMatch = scoreboard.getMatch(matchId);
         assertNull(storedMatch);
+    }
+
+    @Test
+    void scoreboard_finishing_a_match_with_an_invalid_matchId_leads_to_an_exception() {
+        // Given a new match is started
+        scoreboard.startNewMatch(TEST_HOME_TEAM, TEST_AWAY_TEAM);
+
+        // When using an invalid matchId, and trying to update a match it leads to exception
+        final EntryNotFoundException entryNotFoundException = assertThrows(EntryNotFoundException.class, () -> scoreboard.finishMatch("123"));
+
+        // Then a descriptive error message is given
+        assertEquals("No match entry was found when trying to get match with matchId '123'", entryNotFoundException.getMessage());
     }
 
     // Get matches in order

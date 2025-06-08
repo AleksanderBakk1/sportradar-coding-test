@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
+import java.security.InvalidParameterException;
 import java.time.Instant;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTest {
     private final static Team TEST_HOME_TEAM = new Team("test_home_team");
@@ -22,6 +25,22 @@ public class MatchTest {
         // Then the team names are created correctly
         assertEquals("test_home_team", match.getHomeTeam().teamName());
         assertEquals("test_away_team", match.getAwayTeam().teamName());
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void a_new_match_must_not_have_null_or_empty_team_names(final String invalidTeamName) {
+        // When a new match is created with invalid home team
+        final InvalidParameterException invalidParameterExceptionHome = assertThrows(
+                InvalidParameterException.class, () -> new Match(new Team(invalidTeamName), TEST_AWAY_TEAM)
+        );
+        // and a new match is created with invalid away team
+        final InvalidParameterException invalidParameterExceptionAway = assertThrows(
+                InvalidParameterException.class, () -> new Match(TEST_HOME_TEAM, new Team(invalidTeamName))
+        );
+        // Then both teams resulted in an exception with a descriptive error message
+        assertEquals("Parameter homeTeam cannot be null or empty!", invalidParameterExceptionHome.getMessage());
+        assertEquals("Parameter awayTeam cannot be null or empty!", invalidParameterExceptionAway.getMessage());
     }
 
     @Test
@@ -54,6 +73,17 @@ public class MatchTest {
                 Arguments.of(0, 1, 1),
                 Arguments.of(123, 123, 246)
         );
+    }
+
+    @Test
+    void a_match_will_not_be_updated_if_score_is_null() {
+        // Given a new match
+        final Match match = new Match(TEST_HOME_TEAM, TEST_AWAY_TEAM);
+        // When the score is updated with a null object
+        match.setMatchScore(null);
+        // Then the score in the match is not updated
+        assertEquals(0, match.getMatchScore().homeScore());
+        assertEquals(0, match.getMatchScore().awayScore());
     }
 
     @Test
